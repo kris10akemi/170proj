@@ -1,5 +1,6 @@
 import networkx as nx
 import os
+import matplotlib.pyplot as plt
 
 small = 7
 medium = 22
@@ -12,22 +13,29 @@ def small_output():
     num_buses = small
 
     students = []
-    for i in range(49):
+    for i in range(num_students):
         students.append(i + 1)
 
     graph.add_nodes_from(students)
 
-    print(list(graph.nodes))
+    student = 1
+    while student <= num_students:
+        for i in range(student, student + small):
+            for k in range(student, student + small):
+                if i != k:
+                    graph.add_edge(i, k)
+        student += small
+
+    # print(list(graph.nodes))
+
+    # play around with k and iterations - more iterations = centered around component, k = optimal node dist
+    pos=nx.spring_layout(graph, k = .9, iterations = 70)
+    nx.draw(graph, pos, node_size = 25, font_size = 8, with_labels=True)
+    plt.show()
 
 
 
 def main():
-    '''
-        Main method which iterates over all inputs and calls `solve` on each.
-        The student should modify `solve` to return their solution and modify
-        the portion which writes it to a file to make sure their output is
-        formatted correctly.
-    '''
     small_output()
 
 if __name__ == '__main__':
